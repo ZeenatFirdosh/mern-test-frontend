@@ -82,8 +82,17 @@ export const loadUser = () => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_REQUEST });
 
-    const { data } = await axios.get(`https://ecommerce-react-s68q.onrender.com/api/v1/me`);
+    const config = {
+      withCredentials: true,
+      headers: {
+        'Authorization': ` ${localStorage.getItem("token")}`,
 
+        "token": localStorage.getItem("token"),
+      },
+    };
+    console.log("token" + localStorage.getItem("token") );
+
+    const { data } = await axios.get(`https://ecommerce-react-s68q.onrender.com/api/v1/me`,config);
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
   } catch (error) {
     dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.message });
